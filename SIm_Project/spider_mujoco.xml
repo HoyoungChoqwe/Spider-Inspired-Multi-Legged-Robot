@@ -1,0 +1,326 @@
+<mujoco model="spider_mujoco">
+
+    <compiler angle="degree" coordinate="local"/>
+    <option gravity="0 0 -9.81" timestep="0.002" iterations="100"/>
+
+    <default>
+        <geom friction="3.0 1.0 1.0" solref="0.008 1" solimp="0.95 0.99 0.001"/>
+        <joint damping="1.5"/>
+    </default>
+
+    <asset>
+        <texture name="grid" type="2d" builtin="checker" width="512" height="512"
+                 rgb1="0.75 0.75 0.75" rgb2="0.50 0.50 0.50"/>
+        <material name="grid_mat" texture="grid" texrepeat="12 12"/>
+
+        <material name="slope_mat" rgba="0.45 0.45 0.45 1"/>
+        <material name="obstacle_mat" rgba="0.25 0.25 0.25 1"/>
+        <material name="body_mat" rgba="0.35 0.35 0.35 1"/>
+        <material name="group_a_mat" rgba="0.8 0.1 0.1 1"/>
+        <material name="group_b_mat" rgba="0.1 0.1 0.8 1"/>
+        <material name="lower_leg_mat" rgba="0.02 0.02 0.02 1"/>
+        <material name="foot_mat" rgba="0.0 0.0 0.0 1"/>
+    </asset>
+
+    <worldbody>
+
+        <geom name="base_floor"
+              type="plane"
+              size="12 12 0.1"
+              material="grid_mat"
+              friction="2.0 0.5 0.5"/>
+
+        <light name="top_light"
+               pos="0 -2 7"
+               dir="0 0 -1"/>
+
+        <camera name="track"
+                pos="-2.8 -4.0 2.4"
+                xyaxes="0.82 -0.57 0 0.35 0.50 0.79"/>
+
+        <!-- 20 degree uneven slope, positive x is uphill -->
+        <body name="slope_body" pos="1.8 0 0.65" euler="0 -20 0">
+
+            <geom name="main_slope"
+                  type="box"
+                  size="4.8 1.55 0.08"
+                  pos="0 0 0"
+                  material="slope_mat"
+                  friction="4.0 1.2 1.2"
+                  mass="0"
+                  contype="1"
+                  conaffinity="1"/>
+
+            <!-- Dense uneven terrain obstacles across the slope -->
+            <geom name="obs_1" type="box" size="0.09 0.12 0.030"
+                  pos="-3.50 -0.85 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_2" type="box" size="0.11 0.10 0.035"
+                  pos="-3.25 -0.25 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_3" type="box" size="0.10 0.13 0.030"
+                  pos="-3.05 0.45 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_4" type="box" size="0.12 0.11 0.040"
+                  pos="-2.75 -0.60 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_5" type="box" size="0.08 0.14 0.030"
+                  pos="-2.55 0.10 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_6" type="box" size="0.13 0.10 0.035"
+                  pos="-2.35 0.75 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="obs_7" type="box" size="0.10 0.12 0.035"
+                  pos="-2.05 -0.85 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_8" type="box" size="0.11 0.11 0.040"
+                  pos="-1.85 -0.20 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_9" type="box" size="0.09 0.13 0.030"
+                  pos="-1.65 0.50 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_10" type="box" size="0.14 0.09 0.040"
+                  pos="-1.35 -0.55 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_11" type="box" size="0.10 0.14 0.035"
+                  pos="-1.15 0.15 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_12" type="box" size="0.12 0.11 0.045"
+                  pos="-0.90 0.85 0.135" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="obs_13" type="box" size="0.09 0.12 0.030"
+                  pos="-0.65 -0.80 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_14" type="box" size="0.13 0.10 0.040"
+                  pos="-0.45 -0.25 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_15" type="box" size="0.10 0.13 0.035"
+                  pos="-0.25 0.45 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_16" type="box" size="0.12 0.12 0.040"
+                  pos="0.05 -0.60 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_17" type="box" size="0.08 0.14 0.030"
+                  pos="0.25 0.05 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_18" type="box" size="0.13 0.10 0.045"
+                  pos="0.50 0.75 0.135" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="obs_19" type="box" size="0.10 0.12 0.035"
+                  pos="0.75 -0.85 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_20" type="box" size="0.12 0.11 0.040"
+                  pos="0.95 -0.20 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_21" type="box" size="0.09 0.13 0.030"
+                  pos="1.20 0.45 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_22" type="box" size="0.14 0.09 0.045"
+                  pos="1.45 -0.55 0.135" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_23" type="box" size="0.10 0.14 0.035"
+                  pos="1.65 0.15 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_24" type="box" size="0.12 0.11 0.040"
+                  pos="1.95 0.85 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="obs_25" type="box" size="0.09 0.12 0.030"
+                  pos="2.15 -0.80 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_26" type="box" size="0.13 0.10 0.040"
+                  pos="2.40 -0.25 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_27" type="box" size="0.10 0.13 0.035"
+                  pos="2.65 0.45 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_28" type="box" size="0.12 0.12 0.040"
+                  pos="2.95 -0.60 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_29" type="box" size="0.08 0.14 0.030"
+                  pos="3.20 0.05 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_30" type="box" size="0.13 0.10 0.045"
+                  pos="3.45 0.75 0.135" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="obs_31" type="box" size="0.10 0.12 0.035"
+                  pos="3.65 -0.55 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_32" type="box" size="0.12 0.10 0.040"
+                  pos="3.82 0.20 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_33" type="box" size="0.09 0.14 0.035"
+                  pos="4.02 0.75 0.125" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_34" type="box" size="0.13 0.10 0.045"
+                  pos="4.18 -0.15 0.135" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="obs_35" type="box" size="0.10 0.13 0.040"
+                  pos="4.35 -0.78 0.130" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+            <geom name="edge_obs_1" type="box" size="0.09 0.10 0.035" 
+                    pos="-3.35 -1.25 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_2" type="box" size="0.10 0.09 0.040" 
+                    pos="-3.10 1.22 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_3" type="box" size="0.08 0.12 0.035" 
+                    pos="-2.65 -1.30 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_4" type="box" size="0.11 0.09 0.040" 
+                    pos="-2.40 1.28 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_5" type="box" size="0.10 0.10 0.045" 
+                    pos="-1.95 -1.23 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_6" type="box" size="0.09 0.12 0.035" 
+                    pos="-1.70 1.25 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_7" type="box" size="0.11 0.08 0.040" 
+                    pos="-1.25 -1.32 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_8" type="box" size="0.08 0.11 0.035" 
+                    pos="-1.00 1.30 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_9" type="box" size="0.09 0.10 0.040" 
+                    pos="-0.55 -1.25 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_10" type="box" size="0.10 0.09 0.045" 
+                    pos="-0.30 1.24 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_11" type="box" size="0.08 0.12 0.035" 
+                    pos="0.15 -1.30 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_12" type="box" size="0.11 0.09 0.040" 
+                    pos="0.40 1.28 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_13" type="box" size="0.10 0.10 0.045" 
+                    pos="0.85 -1.24 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_14" type="box" size="0.09 0.12 0.035" 
+                    pos="1.10 1.27 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_15" type="box" size="0.11 0.08 0.040" 
+                    pos="1.55 -1.32 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_16" type="box" size="0.08 0.11 0.035" 
+                    pos="1.80 1.30 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_17" type="box" size="0.09 0.10 0.040" 
+                    pos="2.25 -1.25 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_18" type="box" size="0.10 0.09 0.045" 
+                    pos="2.50 1.24 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_19" type="box" size="0.08 0.12 0.035" 
+                    pos="2.95 -1.30 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_20" type="box" size="0.11 0.09 0.040" 
+                    pos="3.20 1.28 0.115" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_21" type="box" size="0.10 0.10 0.045" 
+                    pos="3.65 -1.24 0.120" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+            <geom name="edge_obs_22" type="box" size="0.09 0.12 0.035" 
+                    pos="3.90 1.27 0.110" material="obstacle_mat" friction="5.0 1.5 1.5"/>
+
+        </body>
+
+        <!-- Flat landing platform at the top -->
+        <body name="top_platform_body" pos="7.50 0 2.28">
+            <geom name="top_platform"
+                  type="box"
+                  size="1.25 1.55 0.08"
+                  pos="0 0 0"
+                  material="slope_mat"
+                  friction="4.0 1.2 1.2"
+                  mass="0"
+                  contype="1"
+                  conaffinity="1"/>
+        </body>
+
+        <!-- Spider starts near the lower part of the slope -->
+        <body name="spider_body" pos="-1.9 0 0.98">
+
+            <freejoint name="root_free"/>
+
+            <geom name="body_box"
+                  type="box"
+                  size="0.38 0.17 0.06"
+                  pos="0 0 0"
+                  material="body_mat"
+                  mass="0.65"
+                  friction="1.0 0.3 0.3"/>
+
+            <!-- LEFT SIDE -->
+            <body name="L1_coxa_base" pos="0.27 0.15 0">
+                <geom name="L1_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="L1_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="L1_pitch_body" pos="0 0 0">
+                    <geom name="L1_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="L1_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="L1_coxa_geom" type="capsule" fromto="0 0 0 0.23 0.20 0" size="0.020" material="group_a_mat" mass="0.025"/>
+                    <geom name="L1_lower_geom" type="capsule" fromto="0.23 0.20 0 0.37 0.38 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="L1_foot" type="sphere" pos="0.37 0.38 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="L2_coxa_base" pos="0.09 0.17 0">
+                <geom name="L2_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="L2_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="L2_pitch_body" pos="0 0 0">
+                    <geom name="L2_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="L2_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="L2_coxa_geom" type="capsule" fromto="0 0 0 0.08 0.27 0" size="0.020" material="group_b_mat" mass="0.025"/>
+                    <geom name="L2_lower_geom" type="capsule" fromto="0.08 0.27 0 0.14 0.48 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="L2_foot" type="sphere" pos="0.14 0.48 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="L3_coxa_base" pos="-0.09 0.17 0">
+                <geom name="L3_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="L3_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="L3_pitch_body" pos="0 0 0">
+                    <geom name="L3_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="L3_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="L3_coxa_geom" type="capsule" fromto="0 0 0 -0.08 0.27 0" size="0.020" material="group_a_mat" mass="0.025"/>
+                    <geom name="L3_lower_geom" type="capsule" fromto="-0.08 0.27 0 -0.14 0.48 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="L3_foot" type="sphere" pos="-0.14 0.48 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="L4_coxa_base" pos="-0.27 0.15 0">
+                <geom name="L4_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="L4_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="L4_pitch_body" pos="0 0 0">
+                    <geom name="L4_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="L4_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="L4_coxa_geom" type="capsule" fromto="0 0 0 -0.23 0.20 0" size="0.020" material="group_b_mat" mass="0.025"/>
+                    <geom name="L4_lower_geom" type="capsule" fromto="-0.23 0.20 0 -0.37 0.38 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="L4_foot" type="sphere" pos="-0.37 0.38 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <!-- RIGHT SIDE -->
+            <body name="R1_coxa_base" pos="0.27 -0.15 0">
+                <geom name="R1_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="R1_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="R1_pitch_body" pos="0 0 0">
+                    <geom name="R1_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="R1_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="R1_coxa_geom" type="capsule" fromto="0 0 0 0.23 -0.20 0" size="0.020" material="group_b_mat" mass="0.025"/>
+                    <geom name="R1_lower_geom" type="capsule" fromto="0.23 -0.20 0 0.37 -0.38 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="R1_foot" type="sphere" pos="0.37 -0.38 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="R2_coxa_base" pos="0.09 -0.17 0">
+                <geom name="R2_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="R2_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="R2_pitch_body" pos="0 0 0">
+                    <geom name="R2_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="R2_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="R2_coxa_geom" type="capsule" fromto="0 0 0 0.08 -0.27 0" size="0.020" material="group_a_mat" mass="0.025"/>
+                    <geom name="R2_lower_geom" type="capsule" fromto="0.08 -0.27 0 0.14 -0.48 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="R2_foot" type="sphere" pos="0.14 -0.48 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="R3_coxa_base" pos="-0.09 -0.17 0">
+                <geom name="R3_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="R3_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="R3_pitch_body" pos="0 0 0">
+                    <geom name="R3_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="R3_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="R3_coxa_geom" type="capsule" fromto="0 0 0 -0.08 -0.27 0" size="0.020" material="group_b_mat" mass="0.025"/>
+                    <geom name="R3_lower_geom" type="capsule" fromto="-0.08 -0.27 0 -0.14 -0.48 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="R3_foot" type="sphere" pos="-0.14 -0.48 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+            <body name="R4_coxa_base" pos="-0.27 -0.15 0">
+                <geom name="R4_yaw_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                <joint name="R4_yaw" type="hinge" axis="0 0 1" range="-70 70"/>
+                <body name="R4_pitch_body" pos="0 0 0">
+                    <geom name="R4_pitch_mass" type="sphere" size="0.008" rgba="0 0 0 0" mass="0.001" contype="0" conaffinity="0"/>
+                    <joint name="R4_pitch" type="hinge" axis="1 0 0" range="-55 55"/>
+                    <geom name="R4_coxa_geom" type="capsule" fromto="0 0 0 -0.23 -0.20 0" size="0.020" material="group_a_mat" mass="0.025"/>
+                    <geom name="R4_lower_geom" type="capsule" fromto="-0.23 -0.20 0 -0.37 -0.38 -0.39" size="0.018" material="lower_leg_mat" mass="0.035"/>
+                    <geom name="R4_foot" type="sphere" pos="-0.37 -0.38 -0.39" size="0.030" material="foot_mat" mass="0.015" friction="8.0 2.5 2.5"/>
+                </body>
+            </body>
+
+        </body>
+
+    </worldbody>
+
+    <actuator>
+        <position name="L1_yaw_motor" joint="L1_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="L1_pitch_motor" joint="L1_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="L2_yaw_motor" joint="L2_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="L2_pitch_motor" joint="L2_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="L3_yaw_motor" joint="L3_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="L3_pitch_motor" joint="L3_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="L4_yaw_motor" joint="L4_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="L4_pitch_motor" joint="L4_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+
+        <position name="R1_yaw_motor" joint="R1_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="R1_pitch_motor" joint="R1_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="R2_yaw_motor" joint="R2_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="R2_pitch_motor" joint="R2_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="R3_yaw_motor" joint="R3_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="R3_pitch_motor" joint="R3_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+        <position name="R4_yaw_motor" joint="R4_yaw" kp="95" ctrlrange="-1.22 1.22"/>
+        <position name="R4_pitch_motor" joint="R4_pitch" kp="95" ctrlrange="-0.96 0.96"/>
+    </actuator>
+
+</mujoco>
