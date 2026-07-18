@@ -23,6 +23,13 @@ The main objectives of the project were to:
 - Reduce excessive slipping and body rotation
 - Evaluate the robot’s movement using simulation data
 
+## Demonstration
+
+[View the simulation video](ECE216_Simulation_Compressed.mov)
+
+The demonstration shows the robot moving across the simulated terrain using its alternating leg sequence.
+
+
 ## Robot Design
 
 The robot consists of:
