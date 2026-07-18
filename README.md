@@ -12,12 +12,6 @@ The simulated robot uses eight articulated legs arranged around a rectangular bo
 
 The project was developed entirely in simulation using MuJoCo and Python.
 
-## Demonstration
-
-[View the simulation video](ECE216_Simulation.mov)
-
-The demonstration shows the robot moving across the simulated terrain using its alternating leg sequence.
-
 ## Project Goals
 
 The main objectives of the project were to:
